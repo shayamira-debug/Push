@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="התראות לשכה">
+  <title>התראות לשכת המסחר</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html,body{height:100%;margin:0;background:#fff}
+    body{
+      display:grid;
+      place-items:center;
+      font-family:Arial,Helvetica,sans-serif;
+      overflow:hidden;
+    }
+    #logoButton{
+      border:0;background:transparent;padding:0;cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+    #logo{
+      display:block;
+      width:min(72vw,380px);
+      max-height:45vh;
+      object-fit:contain;
+    }
+    #fallback{
+      display:none;
+      font-size:30px;
+      font-weight:700;
+      color:#0d3766;
+      text-align:center;
+      padding:24px;
+    }
+    #status{
+      position:fixed;
+      left:50%;
+      bottom:max(24px, env(safe-area-inset-bottom));
+      transform:translateX(-50%);
+      background:#111;
+      color:#fff;
+      border-radius:999px;
+      padding:10px 16px;
+      font-size:14px;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s;
+      white-space:nowrap;
+    }
+    #status.show{opacity:.92}
+  </style>
+</head>
+<body>
+  <button id="logoButton" aria-label="הפעלת התראות">
+    <img id="logo" src="logo.png" alt="לשכת המסחר">
+    <div id="fallback">לשכת המסחר<br>תל אביב והמרכז</div>
+  </button>
+  <div id="status"></div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

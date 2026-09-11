@@ -1,0 +1,10 @@
+{
+  "name": "התראות לשכת המסחר",
+  "short_name": "התראות לשכה",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "he",
+  "dir": "rtl"
+}
