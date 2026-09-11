@@ -76,14 +76,20 @@ async function enablePush() {
       return;
     }
 
-    toast("3/4 יוצר רישום Push...");
+    toast("3/4 מחדש רישום Push...");
+
+    // V1.4: create a fresh subscription so the phone is bound
+    // to the current VAPID public key after key rotation.
     let subscription = await registration.pushManager.getSubscription();
-    if (!subscription) {
-      subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey)
-      });
+    if (subscription) {
+      await subscription.unsubscribe();
+      subscription = null;
     }
+
+    subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey)
+    });
 
     toast("4/4 שומר ב-Supabase...");
     await saveSubscription(subscription);

@@ -47,3 +47,9 @@ V1.3
 - Diagnostic status is now large and centered on screen.
 - Status no longer disappears automatically.
 - Easier to identify exactly which activation step fails.
+
+
+V1.4
+====
+- Forces a fresh Web Push subscription when the logo is tapped.
+- Fixes stale subscriptions after VAPID key rotation.
