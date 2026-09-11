@@ -1,5 +1,5 @@
-PUSH TEST V1
-============
+PUSH TEST V1.2
+==============
 
 Files:
 - index.html
@@ -8,7 +8,8 @@ Files:
 - manifest.webmanifest
 - config.js
 - supabase.sql
-- logo.png  <-- add the official Chamber logo with this exact filename
+- supabase-permissions-patch.sql
+- logo.png
 
 What happens:
 1. Open the page on the phone.
@@ -19,25 +20,23 @@ What happens:
 
 Supabase:
 Run supabase.sql once in the project's SQL Editor.
+Run supabase-permissions-patch.sql once if not already done.
 
-VAPID:
-Public key already placed in config.js:
-BPp3LI5LmuizQudfY3WvCyX32KPWKn3UDZNHNDCjzGYFLQHBQ2BNgNj-V4AI4vTL3isEB-YdCJ5Tsq9Zjwsk5Po
+VAPID PUBLIC KEY:
+BJ_5dpzwyodIDjn5GLYPaTxZH6VAAMuCTQLEAj3tpOJlQR6oRcKyf7AKhPnrJ3_PTyaoh7f-RCuGBQ4WGZGK8Hs
 
-PRIVATE VAPID KEY - KEEP SERVER-SIDE ONLY:
-LLq2ZekOY4BYRTgkowUKzfkPgGGSMF08Zi9Vs4Fgy7M
-
-Do NOT put the private VAPID key in index.html/app.js/config.js or GitHub Pages.
-We will store it as a server/Edge Function secret in the sending stage.
+IMPORTANT:
+The VAPID PRIVATE KEY must NEVER be stored in this GitHub repository.
+Keep it only as a server-side secret (for example, Supabase Edge Function secret).
 
 Hosting:
 Must be HTTPS. GitHub Pages is suitable.
 
 iPhone:
-For Web Push on iPhone/iPad, install the site to the Home Screen first and then tap the logo to enable notifications.
+Install the site to the Home Screen first, then open it from the Home Screen and tap the logo to enable notifications.
 
-V1.1 FIX
-========
-- Removed incorrect Authorization: Bearer <sb_publishable...> header.
-- Added Supabase PostgreSQL grants patch.
-- Added detailed 1/4 -> 4/4 activation diagnostics on the phone.
+V1.2
+====
+- Rotated VAPID keys after accidental exposure of the old private key.
+- Removed the private key from README.
+- Keeps the V1.1 Supabase/API fixes and diagnostics.

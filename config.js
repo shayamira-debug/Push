@@ -3,5 +3,5 @@
 window.PUSH_CONFIG = {
   supabaseUrl: "https://vadfxhugwblsvgkutvvt.supabase.co",
   supabaseAnonKey: "sb_publishable_LZEExuVQuUzIRc0sA5Lsyw_NCkn_FvX",
-  vapidPublicKey: "BPp3LI5LmuizQudfY3WvCyX32KPWKn3UDZNHNDCjzGYFLQHBQ2BNgNj-V4AI4vTL3isEB-YdCJ5Tsq9Zjwsk5Po"
+  vapidPublicKey: "BJ_5dpzwyodIDjn5GLYPaTxZH6VAAMuCTQLEAj3tpOJlQR6oRcKyf7AKhPnrJ3_PTyaoh7f-RCuGBQ4WGZGK8Hs"
 };
