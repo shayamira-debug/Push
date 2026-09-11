@@ -83,7 +83,16 @@ btn.addEventListener("click", async () => {
       throw new Error(data.error || data.message || data.raw || ("HTTP " + res.status));
     }
 
-    show(`נשלח בהצלחה.\nנשלחו: ${data.sent || 0}\nנכשלו: ${data.failed || 0}`, true);
+    let details = `נשלחו: ${data.sent || 0}\nנכשלו: ${data.failed || 0}`;
+    if (Array.isArray(data.failures) && data.failures.length) {
+      details += "\n\nפרטי כשל:";
+      for (const f of data.failures) {
+        details += `\nID: ${f.id}`;
+        if (f.status) details += ` | HTTP ${f.status}`;
+        if (f.message) details += `\n${f.message}`;
+      }
+    }
+    show(details, (data.failed || 0) === 0);
   } catch (e) {
     show("שגיאה בשליחה: " + e.message, false);
   } finally {
