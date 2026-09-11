@@ -40,7 +40,6 @@ async function saveSubscription(subscription) {
     method: "POST",
     headers: {
       "apikey": cfg.supabaseAnonKey,
-      "Authorization": `Bearer ${cfg.supabaseAnonKey}`,
       "Content-Type": "application/json",
       "Prefer": "resolution=merge-duplicates,return=minimal"
     },
@@ -54,24 +53,32 @@ async function saveSubscription(subscription) {
 }
 
 async function enablePush() {
-  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-    toast("המכשיר או הדפדפן לא תומך ב-Push");
+  if (!("serviceWorker" in navigator)) {
+    toast("שגיאה: Service Worker לא נתמך");
+    return;
+  }
+  if (!("PushManager" in window)) {
+    toast("שגיאה: Push לא נתמך בדפדפן");
     return;
   }
 
   try {
+    toast("1/4 רושם Service Worker...");
     const registration = await navigator.serviceWorker.register("./sw.js");
+    await navigator.serviceWorker.ready;
 
+    toast("2/4 מבקש הרשאת התראות...");
     let permission = Notification.permission;
     if (permission === "default") {
       permission = await Notification.requestPermission();
     }
 
     if (permission !== "granted") {
-      toast("לא אושרה הרשאה להתראות");
+      toast("שגיאה: לא אושרה הרשאת התראות");
       return;
     }
 
+    toast("3/4 יוצר רישום Push...");
     let subscription = await registration.pushManager.getSubscription();
     if (!subscription) {
       subscription = await registration.pushManager.subscribe({
@@ -80,11 +87,14 @@ async function enablePush() {
       });
     }
 
+    toast("4/4 שומר ב-Supabase...");
     await saveSubscription(subscription);
-    toast("ההתראות הופעלו");
+
+    toast("✓ ההתראות הופעלו ונשמרו");
   } catch (err) {
-    console.error(err);
-    toast("שגיאה בהפעלת ההתראות");
+    console.error("Push activation failed:", err);
+    const msg = (err && err.message) ? err.message : String(err);
+    toast("שגיאה: " + msg.slice(0, 110));
   }
 }
 

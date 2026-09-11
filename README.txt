@@ -35,3 +35,9 @@ Must be HTTPS. GitHub Pages is suitable.
 
 iPhone:
 For Web Push on iPhone/iPad, install the site to the Home Screen first and then tap the logo to enable notifications.
+
+V1.1 FIX
+========
+- Removed incorrect Authorization: Bearer <sb_publishable...> header.
+- Added Supabase PostgreSQL grants patch.
+- Added detailed 1/4 -> 4/4 activation diagnostics on the phone.
