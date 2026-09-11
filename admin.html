@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>שליחת התראת בדיקה</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#17202a}
+    .wrap{max-width:640px;margin:40px auto;padding:20px}
+    .card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 8px 28px rgba(0,0,0,.08)}
+    h1{margin-top:0;font-size:26px}
+    label{display:block;font-weight:700;margin:18px 0 8px}
+    input,textarea{width:100%;padding:14px;border:1px solid #ccd3da;border-radius:10px;font-size:17px;font-family:inherit}
+    textarea{min-height:120px;resize:vertical}
+    button{width:100%;margin-top:22px;padding:15px;border:0;border-radius:10px;background:#173f70;color:white;font-size:18px;font-weight:700;cursor:pointer}
+    button:disabled{opacity:.55;cursor:wait}
+    #result{margin-top:18px;padding:14px;border-radius:10px;display:none;white-space:pre-wrap}
+    .ok{display:block!important;background:#e7f6eb;color:#165c28}
+    .err{display:block!important;background:#fdeaea;color:#8a1f1f}
+    .hint{font-size:13px;color:#667085;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>שליחת Push לבדיקה</h1>
+
+      <label for="secret">קוד שליחה</label>
+      <input id="secret" type="password" autocomplete="off" placeholder="הכנס קוד סודי">
+      <div class="hint">הקוד אינו נשמר בדפדפן.</div>
+
+      <label for="title">כותרת</label>
+      <input id="title" value="לשכת המסחר">
+
+      <label for="body">הודעה</label>
+      <textarea id="body">זוהי הודעת Push לבדיקה</textarea>
+
+      <button id="send">שלח Push</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+<script>
+const FUNCTION_URL = "https://vadfxhugwblsvgkutvvt.supabase.co/functions/v1/send-push";
+
+const btn = document.getElementById("send");
+const result = document.getElementById("result");
+
+function show(msg, ok) {
+  result.className = ok ? "ok" : "err";
+  result.textContent = msg;
+}
+
+btn.addEventListener("click", async () => {
+  const secret = document.getElementById("secret").value.trim();
+  const title = document.getElementById("title").value.trim();
+  const body = document.getElementById("body").value.trim();
+
+  if (!secret || !title || !body) {
+    show("יש למלא קוד שליחה, כותרת והודעה.", false);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "שולח...";
+
+  try {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Send-Secret": secret
+      },
+      body: JSON.stringify({ title, body, url: "./" })
+    });
+
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch { data = { raw: text }; }
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || data.raw || ("HTTP " + res.status));
+    }
+
+    show(`נשלח בהצלחה.\nנשלחו: ${data.sent || 0}\nנכשלו: ${data.failed || 0}`, true);
+  } catch (e) {
+    show("שגיאה בשליחה: " + e.message, false);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "שלח Push";
+  }
+});
+</script>
+</body>
+</html>
