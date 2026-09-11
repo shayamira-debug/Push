@@ -13,8 +13,6 @@ logo.addEventListener("error", () => {
 function toast(message) {
   statusEl.textContent = message;
   statusEl.classList.add("show");
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(() => statusEl.classList.remove("show"), 2200);
 }
 
 function urlBase64ToUint8Array(base64String) {

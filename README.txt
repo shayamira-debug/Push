@@ -40,3 +40,10 @@ V1.2
 - Rotated VAPID keys after accidental exposure of the old private key.
 - Removed the private key from README.
 - Keeps the V1.1 Supabase/API fixes and diagnostics.
+
+
+V1.3
+====
+- Diagnostic status is now large and centered on screen.
+- Status no longer disappears automatically.
+- Easier to identify exactly which activation step fails.
